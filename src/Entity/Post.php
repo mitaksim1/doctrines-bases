@@ -38,7 +38,8 @@ class Post
     private $nbLike;
 
     /**
-     * @ORM\Column(type="datetime")
+     * On ajoute une propriété "options" dans la déclaration pour préciser la valeur par défaut du champ
+     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
      */
     private $createdAt;
 
