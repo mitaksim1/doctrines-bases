@@ -38,6 +38,14 @@ class Review
     private $updatedAt;
 
     /**
+     * On a créé le constructeur pour pouvoir associer un objet DateTime par défaut pour la propriété $createdAt
+     */
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+    }
+
+    /**
      * @ORM\ManyToOne(targetEntity=Post::class, inversedBy="reviews")
      * @ORM\JoinColumn(nullable=false)
      */

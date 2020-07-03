@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Author;
+use App\Entity\Review;
 use App\Entity\Post;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -49,4 +50,28 @@ class BlogController extends AbstractController
 
         return $this->json('Article cree');
     }
+
+    /**
+     * @Route("/review/create", name="blog_review_create")
+     */
+     public function createReview() {
+        $review = new Review();
+
+        $review->setUsername('Donald');
+        $review->setBody('Hurricane dorian looks like it will be hitting Florida late Sunday night. Be prepared and please follow state and Federal instructions, it will be a very big Hurricane, perhaps one of the biggest!');
+
+        $postRepository = $this->getDoctrine()->getRepository(Post::class);
+
+        // On récupère l'article qui a l'id 2
+        $post = $postRepository->find(2);
+
+        $review->setPost($post);
+
+        // L'objet Review est prêt, on le persiste
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($review);
+        $em->flush();
+
+        return $this->json('Review cree');
+     }
 }
