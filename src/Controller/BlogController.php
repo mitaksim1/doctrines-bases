@@ -25,6 +25,16 @@ class BlogController extends AbstractController
     }
 
     /**
+     * @Route("/post/{id}/show", name="blog_post_single")
+     */
+    public function postShow(Post $post) {
+        // dump($post);exit;
+        return $this->render('blog/single_post.html.twig', [
+            'post' => $post
+        ]);
+    }
+
+    /**
      * @Route("/post/create", name="blog_post_create")
      */
     public function postCreate() {
@@ -78,4 +88,5 @@ class BlogController extends AbstractController
 
         return $this->json('Review cree');
      }
+
 }
