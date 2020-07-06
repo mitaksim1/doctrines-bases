@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h1>Tous les articles par auteur</h1>
+
+    {% for author in authors %}
+        <div>
+            <p>Article écrit par <span>{{ author.firstname }} {{ author.lastname }}</span></p>
+                {% for post in author.posts %}
+                <div>
+                    <p> {{ post.title }}</p>
+                    <p> {{ post.body }}</p>
+                    {#<a href="{{ path('blog_post_single', {'post': post.id}) }}">Lire la suite</a>#}
+                </div>
+                {% endfor %}
+        </div>
+    {% endfor %}
+
+{% endblock %}

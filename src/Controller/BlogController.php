@@ -27,10 +27,25 @@ class BlogController extends AbstractController
     /**
      * @Route("/post/{id}/show", name="blog_post_single")
      */
-    public function postShow(Post $post) {
+    public function postShow(Post $post) 
+    {
         // dump($post);exit;
         return $this->render('blog/single_post.html.twig', [
             'post' => $post
+        ]);
+    }
+
+    /**
+     * @Route("/author/list", name="blog_author_list")
+     */
+    public function authorList() 
+    {
+        // On cherche tous les auteurs
+        $authorRepository = $this->getDoctrine()->getRepository(Author::class);
+        $allAuthors = $authorRepository->findAll();
+
+        return $this->render('blog/author_list.html.twig', [
+            'authors' => $allAuthors
         ]);
     }
 
