@@ -10,7 +10,7 @@
                 <div>
                     <p> {{ post.title }}</p>
                     <p> {{ post.body }}</p>
-                    {#<a href="{{ path('blog_post_single', {'post': post.id}) }}">Lire la suite</a>#}
+                    <a href={{ path('blog_post_single', {'post': post.id}) }}>Lire la suite</a>
                 </div>
                 {% endfor %}
         </div>

@@ -3,18 +3,24 @@
 {% block title %} {{ post.title }} {% endblock %}
 
 {% block body %}
-    <div>
-        <h1>{{ post.title }}</h1>
-
-        <p>{{ post.body }}</p>
-        <p>par {{ post.author.firstname }} {{ post.author.lastname }} le {{ post.createdAt|date("d M Y h:i") }}</p>
-
-        <ul>
-            {% for review in post.reviews %}
-                <li>{{ review.body }}</li>
-            {% endfor %}
-        </ul>
-    
-    </div>
-
+<div>
+    <h1>{{ post.title }}</h1>
+    <p>{{ post.body }}</p>
+    <p>par {{ post.author.firstname }} {{ post.author.lastname }} le {{ post.createdAt|date("d M Y h:i") }}</p>
+    <ul>
+        {% for review in post.reviews %}
+            <li>{{ review.body }}</li>
+        {% endfor %}
+    </ul>  
+</div>
+<form action="{{ path('add_review') }}" method="post">
+    <p>
+        <input type="hidden" name="post_id" value={{ post.id }}>
+        <input type="text" name="username" id="username" placeholder="Nom d'utilisateur"/>
+    </p>
+    <p>
+        <input type="textarea" name="content" id="comment" placeholder="Commentaire"/>
+    </p>
+    <button>Poster</button>
+</form>
 {% endblock %}

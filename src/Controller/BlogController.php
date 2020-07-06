@@ -7,6 +7,7 @@ use App\Entity\Review;
 use App\Entity\Post;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 class BlogController extends AbstractController
 {
@@ -25,7 +26,7 @@ class BlogController extends AbstractController
     }
 
     /**
-     * @Route("/post/{id}/show", name="blog_post_single")
+     * @Route("/post/{post}/show", name="blog_post_single")
      */
     public function postShow(Post $post) 
     {
@@ -47,6 +48,38 @@ class BlogController extends AbstractController
         return $this->render('blog/author_list.html.twig', [
             'authors' => $allAuthors
         ]);
+    }
+
+    /**
+     * @Route("/add_review", name="add_review", methods={"POST"})
+     */
+    public function reviewAdd(Request $request)
+    {
+        // On utilise $request pour récupérer toutes les données du formulaire
+        // On crée ensuite un objet Review
+        $review = new Review();
+
+        // On lui associe les données trouvées dans le formulaire
+        $review->setUsername($request->request->get('username'));
+        $review->setBody($request->request->get('content'));
+
+        // Relation entre le commentaire et l'article
+        $postId = $request->request->get('post_id');
+        $post = $this->getDoctrine()->getRepository(Post::class)->find($postId);
+
+        $review->setPost($post);
+
+        // On doit récupérer d'abord l'entity manager
+        $em = $this->getDoctrine()->getManager();
+
+        // On demande à Doctrine de persister le nouvel objet
+        // la requête n'est pas exécutée juste preparée
+        $em->persist($review);
+
+        // le flush applique les requêtes qui on été préparées par Doctrine
+        $em->flush();
+
+        return $this->redirectToRoute('blog_post_single', ['post' => $postId]);
     }
 
     /**
