@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter un article{% endblock %}
+
+{% block body %} 
+<form action="{{ path('blog_post_add') }}" method="post">
+    <p>
+        <input type="text" name="title" placeholder="Titre de l'article">
+        <textarea name="body" placeholder="Once upon a time..."></textarea>
+        <input type="text" name="image" placeholder="http://...">
+        <select name="author_id">
+            <option value="1">Marie Alice Deschamps</option>
+            <option value="2">Sheldon Cooper</option>
+            <option value="3">Hommer Simpson</option>
+        </select>
+        <button>Ajouter</button>
+    </p>
+</form>
+{% endblock %}

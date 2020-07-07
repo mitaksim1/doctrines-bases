@@ -79,10 +79,53 @@ class BlogController extends AbstractController
         // le flush applique les requêtes qui on été préparées par Doctrine
         $em->flush();
 
+        // On redirige l'utilisateur vers la page de l'article
+        // Il faut donc préciser l'id du Post à mettre dans l'url
         return $this->redirectToRoute('blog_post_single', ['post' => $postId]);
     }
 
     /**
+     * @Route("post/add", name="blog_post_add")
+     */
+    public function postAdd(Request $request)
+    {
+        // dump($request->getMethod());exit;
+        // On teste si le controlleur est exécutée avec une méthode POST
+        if ($request->getMethod() == 'POST') {
+            // Si c'est le cas, on récupére les données du formulaire
+            $title = $request->request->get('title');
+            $body = $request->request->get('body');
+            $image = $request->request->get('image'); 
+            $authorId = $request->request->get('author_id');
+
+            // Il nous faut un objet Author et non un id
+            $author = $this->getDoctrine()->getRepository(Author::class)->find($authorId);
+
+            // On crée un nouvel objet POST
+            $post = new Post();
+
+            // On ajoute à cet objet toutes les données du formulaire
+            $post->setTitle($title)->setBody($body)->setImage($image)->setAuthor($author);
+
+            // On persiste cet objet POST
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($post);
+
+            // On flush
+            $em->flush();
+
+            // On redirige l'utilisateur vers la page de l'article
+            return $this->redirectToRoute('blog_post_single', ['post' => $post->getId()]);
+        }
+           
+        // Si on ne reçoit pas d'info en POST, on affiche un formulaire
+        return $this->render('blog/post_add.html.twig');
+    }
+
+
+
+    /**
+     *  Cette route crée un article prédéfini sans formulaire
      * @Route("/post/create", name="blog_post_create")
      */
     public function postCreate() {

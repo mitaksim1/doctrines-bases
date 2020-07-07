@@ -37,7 +37,7 @@ class Post
     /**
      * @ORM\Column(type="integer", options={"default": 0})
      */
-    private $nbLike;
+    private $nbLike=0;
 
     /**
      * On ajoute une propriété "options" dans la déclaration pour préciser la valeur par défaut du champ
